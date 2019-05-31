@@ -158,10 +158,10 @@ contract('SupplyChain', function(accounts) {
         const supplyChain = await SupplyChain.deployed()
         
         // Mark an item as Sold by calling function buyItem()
+        await SupplyChain.addDistributor(distributorID, {from: ownerID});
+        let results = await supplyChain.buyItem(upc, {from: ownerID, value: productPrice})
 
-        let results = await supplyChain.buyItem(upc, {from: distributorID})
-
-          //let result = await supplyChain.buyItem(upc, {from: ownerID})  
+        //let result = await supplyChain.buyItem(upc, {from: ownerID})  
         
         // Watch the emitted event Sold()
         let event = results.logs[0].event
