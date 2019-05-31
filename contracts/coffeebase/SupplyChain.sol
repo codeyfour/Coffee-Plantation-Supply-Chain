@@ -9,6 +9,10 @@ import "../coffeecore/Ownable.sol";
 
 contract SupplyChain is ConsumerRole, DistributorRole, FarmerRole, RetailerRole, Ownable{
 
+// @notice Will receive any eth sent to the contract
+function () external payable {
+}
+
   // Define 'owner'
   address payable owner;
 
@@ -83,8 +87,8 @@ contract SupplyChain is ConsumerRole, DistributorRole, FarmerRole, RetailerRole,
 
   // Define a modifier that checks if the paid amount is sufficient to cover the price
   modifier paidEnough(uint _price) {
-    require(msg.value >= _price);
-    _;
+    require(msg.value >= _price, "Not Enough paid or value not sent correctly.");
+      _;
   }
   
   // Define a modifier that checks the price and refunds the remaining balance
@@ -163,6 +167,10 @@ contract SupplyChain is ConsumerRole, DistributorRole, FarmerRole, RetailerRole,
   function harvestItem(uint _upc, address payable _originFarmerID, string memory _originFarmName, string memory _originFarmInformation,
                        string memory _originFarmLatitude, string memory _originFarmLongitude, string memory _productNotes) public
   {
+
+     //Add Owner
+    items[_upc].ownerID = _originFarmerID;
+
     // Add the new item as part of Harvest
     items[_upc].upc = _upc;
     items[_upc].itemState = State.Harvested;
